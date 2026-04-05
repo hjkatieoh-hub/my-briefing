@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>나의 브리핑 대시보드</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#0c0c0c; --card:#161616; --card2:#1e1e1e; --border:#252525; --border2:#333;
+  --text:#e2e2e2; --muted:#888; --hint:#444;
+  --blue:#60a5fa; --green:#4ade80; --amber:#fbbf24; --red:#f87171; --purple:#a78bfa; --teal:#2dd4bf; --pink:#f472b6;
+  --blue-bg:#1e3a5f; --green-bg:#14402a; --amber-bg:#422d0a; --red-bg:#3f1515;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Noto Sans KR',sans-serif;display:grid;grid-template-rows:auto 1fr;min-height:100vh}
+
+/* ── topbar ── */
+.topbar{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;background:var(--bg);z-index:10}
+.logo{font-size:15px;font-weight:600;letter-spacing:-.3px}
+.topbar-meta{font-size:12px;color:var(--muted);display:flex;gap:16px}
+.streak-badge{background:var(--amber-bg);color:var(--amber);font-size:11px;padding:2px 9px;border-radius:10px;font-weight:500}
+
+/* ── layout ── */
+.shell{display:grid;grid-template-columns:220px 1fr;overflow:hidden}
+
+/* ── sidebar ── */
+.sidebar{border-right:1px solid var(--border);padding:1rem 0;overflow-y:auto;background:var(--card)}
+.sb-section{font-size:10px;font-weight:600;letter-spacing:.8px;color:var(--hint);padding:12px 16px 5px;text-transform:uppercase}
+.sb-item{display:flex;align-items:center;gap:8px;padding:8px 16px;cursor:pointer;font-size:12.5px;color:var(--muted);transition:all .12s;border-left:2px solid transparent}
+.sb-item:hover{color:var(--text);background:var(--card2)}
+.sb-item.on{color:var(--text);background:var(--card2);border-left-color:var(--blue);font-weight:500}
+.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sb-divider{height:1px;background:var(--border);margin:8px 0}
+.sb-date-item{display:flex;align-items:center;justify-content:space-between;padding:6px 16px;cursor:pointer;font-size:11.5px;color:var(--muted);transition:background .1s}
+.sb-date-item:hover{background:var(--card2);color:var(--text)}
+.sb-date-item.on{color:var(--blue)}
+.sb-mode-badge{font-size:9px;padding:1px 6px;border-radius:6px;font-weight:500}
+.badge-daily{background:#1e3a5f;color:var(--blue)}
+.badge-weekly{background:#2d1b5e;color:var(--purple)}
+
+/* ── main ── */
+.main{overflow-y:auto;padding:1.5rem}
+.page-head{margin-bottom:1.25rem}
+.page-title{font-size:18px;font-weight:600;letter-spacing:-.3px}
+.page-sub{font-size:12px;color:var(--muted);margin-top:3px}
+
+/* ── metric row ── */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem}
+.metric{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.m-lbl{font-size:10px;color:var(--muted);margin-bottom:4px}
+.m-val{font-size:20px;font-weight:600;letter-spacing:-.5px}
+.m-chg{font-size:11px;margin-top:2px}
+.up{color:var(--green)} .dn{color:var(--red)} .neu{color:var(--muted)}
+
+/* ── cards ── */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+.card-full{grid-column:1/-1}
+.card-lbl{font-size:10px;font-weight:600;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.card-lbl span{font-size:14px}
+.card-body{font-size:13px;color:var(--muted);line-height:1.8}
+.card-body b{font-weight:500;color:var(--text)}
+.card-body p{margin-bottom:5px}
+.card-body p:last-child{margin-bottom:0}
+
+/* ── insight box ── */
+.insight{background:var(--amber-bg);border:1px solid #5a3d0a;border-radius:8px;padding:10px 12px;margin-top:10px}
+.insight-lbl{font-size:9px;font-weight:600;letter-spacing:.5px;color:var(--amber);margin-bottom:5px;text-transform:uppercase}
+.insight-body{font-size:12.5px;color:var(--amber);line-height:1.7}
+
+/* ── signal lights ── */
+.signals{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.signal{border-radius:8px;padding:8px 10px;text-align:center}
+.signal-lbl{font-size:10px;margin-bottom:3px}
+.signal-val{font-size:13px;font-weight:600}
+.sig-go{background:var(--green-bg);border:1px solid #1a5c35}
+.sig-go .signal-lbl{color:#4ade80aa} .sig-go .signal-val{color:var(--green)}
+.sig-wait{background:var(--amber-bg);border:1px solid #5a3d0a}
+.sig-wait .signal-lbl{color:#fbbf24aa} .sig-wait .signal-val{color:var(--amber)}
+.sig-stop{background:var(--red-bg);border:1px solid #5c1a1a}
+.sig-stop .signal-lbl{color:#f87171aa} .sig-stop .signal-val{color:var(--red)}
+
+/* ── calculator ── */
+.calc{border:1px solid var(--border2);border-radius:8px;padding:12px;margin-top:10px}
+.calc-title{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.calc-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
+.calc-lbl{color:var(--muted)}
+.calc-val{font-weight:500;color:var(--text)}
+.calc-total{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.calc-slider{margin:10px 0 4px}
+.calc-slider label{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:4px}
+.calc-slider input{width:100%;accent-color:var(--blue)}
+
+/* ── event list ── */
+.event-row{display:flex;gap:10px;margin-bottom:7px;align-items:flex-start}
+.event-day{font-size:11px;font-weight:600;color:var(--muted);min-width:20px;padding-top:1px;flex-shrink:0}
+.event-body{font-size:12.5px;color:var(--muted);line-height:1.5}
+.event-body b{font-weight:500;color:var(--text)}
+
+/* ── chart ── */
+.chart-wrap{height:180px;position:relative;margin-top:8px}
+
+/* ── weekly special ── */
+.concept-box{background:var(--blue-bg);border:1px solid #1e4a80;border-radius:8px;padding:12px;margin-top:4px}
+.concept-step{display:flex;gap:8px;margin-bottom:7px;align-items:flex-start}
+.concept-num{width:18px;height:18px;border-radius:50%;background:#1e4a80;color:var(--blue);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.concept-text{font-size:12.5px;color:#93c5fd;line-height:1.6}
+
+/* ── loading / empty ── */
+.loading{padding:3rem;text-align:center;color:var(--muted);font-size:13px}
+.spinner{width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:640px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .cards{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">나의 브리핑 대시보드</div>
+  <div class="topbar-meta">
+    <span id="top-date"></span>
+    <span class="streak-badge" id="top-streak">연속 0일</span>
+  </div>
+</div>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="sb-section">데일리 섹션</div>
+    <div class="sb-item on" onclick="navTo('weather')" id="nav-weather"><div class="sb-dot" style="background:#fbbf24"></div>날씨 & 옷차림</div>
+    <div class="sb-item" onclick="navTo('stocks')"    id="nav-stocks"><div class="sb-dot" style="background:#60a5fa"></div>해외주식 & 환율</div>
+    <div class="sb-item" onclick="navTo('realestate')"id="nav-realestate"><div class="sb-dot" style="background:#f87171"></div>부동산 시그널</div>
+    <div class="sb-item" onclick="navTo('toss')"      id="nav-toss"><div class="sb-dot" style="background:#2dd4bf"></div>토스 & 핀테크</div>
+    <div class="sb-item" onclick="navTo('industry')"  id="nav-industry"><div class="sb-dot" style="background:#a78bfa"></div>네카라쿠배</div>
+    <div class="sb-item" onclick="navTo('ai')"        id="nav-ai"><div class="sb-dot" style="background:#f472b6"></div>AI 트렌드</div>
+    <div class="sb-item" onclick="navTo('daily_insight')" id="nav-daily_insight"><div class="sb-dot" style="background:#fbbf24"></div>오늘의 인사이트</div>
+    <div class="sb-divider"></div>
+    <div class="sb-section">위클리 섹션</div>
+    <div class="sb-item" onclick="navTo('weekly_market')"     id="nav-weekly_market"><div class="sb-dot" style="background:#60a5fa"></div>주간 시장 리뷰</div>
+    <div class="sb-item" onclick="navTo('weekly_realestate')" id="nav-weekly_realestate"><div class="sb-dot" style="background:#f87171"></div>부동산 주간 리포트</div>
+    <div class="sb-item" onclick="navTo('weekly_fintech')"    id="nav-weekly_fintech"><div class="sb-dot" style="background:#2dd4bf"></div>핀테크 업계 흐름</div>
+    <div class="sb-item" onclick="navTo('weekly_calendar')"   id="nav-weekly_calendar"><div class="sb-dot" style="background:#a78bfa"></div>이번 주 경제 일정</div>
+    <div class="sb-item" onclick="navTo('weekly_events')"     id="nav-weekly_events"><div class="sb-dot" style="background:#f472b6"></div>이번 주말 행사</div>
+    <div class="sb-item" onclick="navTo('weekly_concept')"    id="nav-weekly_concept"><div class="sb-dot" style="background:#4ade80"></div>이번 주 배울 개념</div>
+    <div class="sb-item" onclick="navTo('weekly_signal')"     id="nav-weekly_signal"><div class="sb-dot" style="background:#fbbf24"></div>다음 주 시그널</div>
+    <div class="sb-divider"></div>
+    <div class="sb-section">히스토리</div>
+    <div id="history-list"></div>
+  </aside>
+
+  <main class="main" id="main">
+    <div class="loading"><div class="spinner"></div>데이터 불러오는 중...</div>
+  </main>
+</div>
+
+<script>
+// ── 설정 ──────────────────────────────────────────────────────
+const GH_USER   = 'your-username';   // ← 변경
+const GH_REPO   = 'my-briefing';     // ← 변경
+const GH_BRANCH = 'main';
+const RAW = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}`;
+// ─────────────────────────────────────────────────────────────
+
+let allData   = {};   // { 'YYYY-MM-DD-daily': {...}, 'YYYY-MM-DD-weekly': {...} }
+let currentId = null; // 'YYYY-MM-DD-daily'
+let currentSec= 'weather';
+
+const DAYS = ['일','월','화','수','목','금','토'];
+
+async function init() {
+  const now = new Date();
+  document.getElementById('top-date').textContent =
+    `${now.getMonth()+1}월 ${now.getDate()}일 ${DAYS[now.getDay()]}요일`;
+
+  await loadHistory();
+  renderHistorySidebar();
+
+  const latest = Object.keys(allData).sort().reverse()[0];
+  if (latest) {
+    currentId = latest;
+    render();
+  } else {
+    document.getElementById('main').innerHTML =
+      `<div class="loading">아직 브리핑이 없습니다.<br><small style="color:#555">GitHub Actions가 실행되면 여기에 표시돼요.</small></div>`;
+  }
+}
+
+async function loadHistory() {
+  try {
+    const res  = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/git/trees/${GH_BRANCH}?recursive=1`);
+    const data = await res.json();
+    const files = (data.tree || [])
+      .filter(f => f.path.startsWith('briefings/') && f.path.endsWith('.json'))
+      .map(f => f.path).sort().reverse().slice(0, 60);
+
+    await Promise.all(files.map(async fp => {
+      try {
+        const r = await fetch(`${RAW}/${fp}`);
+        if (!r.ok) return;
+        const d = await r.json();
+        const key = `${d.date}-${d.mode}`;
+        allData[key] = d;
+      } catch {}
+    }));
+
+    // streak 계산
+    const today = new Date();
+    let streak = 0;
+    for (let i = 0; i < 60; i++) {
+      const d = new Date(today); d.setDate(d.getDate() - i);
+      const ds = d.toISOString().slice(0,10);
+      if (allData[`${ds}-daily`]) streak++;
+      else break;
+    }
+    document.getElementById('top-streak').textContent = `연속 ${streak}일`;
+  } catch (e) {
+    console.error('히스토리 로드 실패:', e);
+  }
+}
+
+function renderHistorySidebar() {
+  const keys = Object.keys(allData).sort().reverse();
+  const days  = {};
+  keys.forEach(k => {
+    const [date, mode] = k.split(/-(?=daily|weekly)/);
+    if (!days[date]) days[date] = [];
+    days[date].push(mode);
+  });
+
+  const el = document.getElementById('history-list');
+  el.innerHTML = Object.entries(days).slice(0,14).map(([date, modes]) => {
+    const d = new Date(date);
+    const label = `${d.getMonth()+1}/${d.getDate()} ${DAYS[d.getDay()]}`;
+    const badges = modes.map(m =>
+      `<span class="sb-mode-badge badge-${m}">${m==='daily'?'D':'W'}</span>`).join(' ');
+    const key = `${date}-${modes[0]}`;
+    return `<div class="sb-date-item ${currentId===key?'on':''}" onclick="loadDate('${date}','${modes[0]}')">${label}${badges}</div>`;
+  }).join('');
+}
+
+async function loadDate(date, mode) {
+  currentId  = `${date}-${mode}`;
+  currentSec = mode === 'daily' ? 'weather' : 'weekly_market';
+  renderHistorySidebar();
+  render();
+}
+
+function navTo(sec) {
+  currentSec = sec;
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.remove('on'));
+  const el = document.getElementById('nav-' + sec);
+  if (el) el.classList.add('on');
+  render();
+}
+
+function render() {
+  if (!currentId) return;
+  const data = allData[currentId];
+  if (!data) return;
+
+  const secData = (data.sections || []).find(s => s.id === currentSec);
+  const main = document.getElementById('main');
+
+  if (!secData) {
+    main.innerHTML = `<div class="loading">이 날짜의 ${currentSec} 섹션이 없습니다.</div>`;
+    return;
+  }
+
+  main.innerHTML = buildSection(secData, data);
+}
+
+function buildSection(sec, data) {
+  const content  = formatContent(sec.content || '');
+  const dateStr  = (() => { const d=new Date(data.date); return `${d.getMonth()+1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`; })();
+  const modeLabel = data.mode === 'daily' ? '데일리' : '위클리';
+
+  let extra = '';
+
+  if (sec.id === 'realestate' || sec.id === 'weekly_realestate') {
+    extra = buildRealestateExtra();
+  } else if (sec.id === 'stocks' || sec.id === 'weekly_market') {
+    extra = buildStocksExtra();
+  } else if (sec.id === 'weekly_concept') {
+    extra = buildConceptExtra(sec.content);
+  }
+
+  return `
+    <div class="page-head">
+      <div class="page-title">${sec.emoji} ${sec.title}</div>
+      <div class="page-sub">${dateStr} · ${modeLabel} · ${data.generated_at ? data.generated_at.slice(11,16)+' KST' : ''}</div>
+    </div>
+    <div class="cards">
+      <div class="card card-full">
+        <div class="card-lbl"><span>${sec.emoji}</span> ${sec.title}</div>
+        <div class="card-body">${content}</div>
+      </div>
+      ${extra}
+    </div>`;
+}
+
+function buildRealestateExtra() {
+  return `
+    <div class="card">
+      <div class="card-lbl">🚦 매수 타이밍 신호등</div>
+      <div class="signals">
+        <div class="signal sig-go"><div class="signal-lbl">금리 방향</div><div class="signal-val">🟢 하락</div></div>
+        <div class="signal sig-wait"><div class="signal-lbl">매수심리</div><div class="signal-val">🟡 회복</div></div>
+        <div class="signal sig-go"><div class="signal-lbl">거래량</div><div class="signal-val">🟢 증가</div></div>
+      </div>
+      <div class="insight" style="margin-top:10px">
+        <div class="insight-lbl">종합 판단</div>
+        <div class="insight-body">🟡 관망 유효 — 금리 추가 인하 신호 확인 후 진입 고려.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">🧮 매수 가능 금액 계산기</div>
+      <div class="calc">
+        <div class="calc-title">자본 4억 · LTV 60% 기준</div>
+        <div class="calc-slider">
+          <label><span>금리</span><span id="rate-out">3.85%</span></label>
+          <input type="range" min="250" max="700" value="385" step="5" id="rate-slider" oninput="calcLoan()">
+        </div>
+        <div class="calc-row"><span class="calc-lbl">자본</span><span class="calc-val">4억</span></div>
+        <div class="calc-row"><span class="calc-lbl">대출 (LTV 60%)</span><span class="calc-val">6억</span></div>
+        <div class="calc-row"><span class="calc-lbl">최대 매수 가능</span><span class="calc-val">10억</span></div>
+        <div class="calc-total"><span>월 상환액 (30년)</span><span id="monthly-out" style="color:var(--amber)">281만원</span></div>
+      </div>
+    </div>`;
+}
+
+function calcLoan() {
+  const rate = parseInt(document.getElementById('rate-slider').value);
+  document.getElementById('rate-out').textContent = (rate/100).toFixed(2) + '%';
+  const r = rate / 100 / 12;
+  const n = 30 * 12;
+  const P = 600000000;
+  const monthly = P * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  document.getElementById('monthly-out').textContent = Math.round(monthly/10000) + '만원';
+}
+
+function buildStocksExtra() {
+  return `
+    <div class="card">
+      <div class="card-lbl">💰 포트폴리오 영향 추정</div>
+      <div class="calc">
+        <div class="calc-title">해외주식 보유 기준</div>
+        <div class="calc-slider">
+          <label><span>보유 금액</span><span id="port-out">1억</span></label>
+          <input type="range" min="1" max="20" value="1" step="1" id="port-slider" oninput="calcPort()">
+        </div>
+        <div class="calc-row"><span class="calc-lbl">S&P500 +1% 시</span><span class="calc-val" id="port-sp">+100만원</span></div>
+        <div class="calc-row"><span class="calc-lbl">나스닥 +1% 시</span><span class="calc-val" id="port-nq">+100만원</span></div>
+        <div class="calc-row"><span class="calc-lbl">환율 +1% 시</span><span class="calc-val" id="port-fx">+100만원</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">📅 이번 주 주요 일정</div>
+      <div class="event-row"><div class="event-day">화</div><div class="event-body">미국 <b>CPI 발표</b> ★★★</div></div>
+      <div class="event-row"><div class="event-day">수</div><div class="event-body"><b>FOMC 의사록</b> 공개 ★★★</div></div>
+      <div class="event-row"><div class="event-day">목</div><div class="event-body">삼성전자 <b>잠정 실적</b> ★★</div></div>
+      <div class="event-row"><div class="event-day">금</div><div class="event-body">미국 <b>고용지표</b> ★★★</div></div>
+    </div>`;
+}
+
+function calcPort() {
+  const amt = parseInt(document.getElementById('port-slider').value);
+  document.getElementById('port-out').textContent = amt + '억';
+  const base = amt * 100;
+  document.getElementById('port-sp').textContent = `+${base}만원`;
+  document.getElementById('port-nq').textContent = `+${base}만원`;
+  document.getElementById('port-fx').textContent = `+${base}만원`;
+}
+
+function buildConceptExtra(content) {
+  return `
+    <div class="card card-full">
+      <div class="card-lbl">📖 개념 학습 가이드</div>
+      <div class="concept-box">
+        <div class="concept-step"><div class="concept-num">1</div><div class="concept-text"><b style="color:#93c5fd">정의</b> — 개념이 무엇인지 기본 의미</div></div>
+        <div class="concept-step"><div class="concept-num">2</div><div class="concept-text"><b style="color:#93c5fd">예시</b> — 실생활에서 어떻게 나타나는지</div></div>
+        <div class="concept-step"><div class="concept-num">3</div><div class="concept-text"><b style="color:#93c5fd">시장</b> — 현재 시장에서의 의미와 영향</div></div>
+        <div class="concept-step"><div class="concept-num">4</div><div class="concept-text"><b style="color:#93c5fd">내 자산</b> — 투자/부동산 계획과의 연관성</div></div>
+      </div>
+    </div>`;
+}
+
+function formatContent(text) {
+  if (!text) return '<span style="color:#555">내용 없음</span>';
+  return text.split('\n').filter(l => l.trim()).map(line => {
+    line = line.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+    const m = line.match(/^(\d+)[.。]\s*(.+)/);
+    if (m) return `<p><span style="color:#555;margin-right:6px">${m[1]}.</span>${m[2]}</p>`;
+    if (line.startsWith('- ') || line.startsWith('· ')) return `<p style="padding-left:8px">${line.slice(2)}</p>`;
+    if (line.startsWith('#')) return `<p style="font-weight:500;color:var(--text);margin-top:8px">${line.replace(/^#+\s*/,'')}</p>`;
+    return `<p>${line}</p>`;
+  }).join('');
+}
+
+init();
+</script>
+</body>
+</html>

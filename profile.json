@@ -1,0 +1,34 @@
+{
+  "user": {
+    "name": "나",
+    "location": "경기도 남양주시 화도읍",
+    "job": "토스 재직",
+    "timezone": "Asia/Seoul"
+  },
+  "real_estate": {
+    "capital_man": 40000,
+    "ltv_rate": 0.6,
+    "target_years": 5,
+    "loan_years": 30,
+    "watch_regions": ["성동구", "마포구", "용산구", "강남구", "서초구"]
+  },
+  "stocks": {
+    "market": "해외(미국)",
+    "portfolio_man": 10000,
+    "watch_indices": ["S&P500", "나스닥", "다우존스"],
+    "watch_fx": "USD/KRW"
+  },
+  "fintech": {
+    "company": "토스",
+    "entities": ["토스", "토스뱅크", "토스증권", "토스페이먼츠", "비바리퍼블리카"],
+    "competitors": ["카카오페이", "네이버파이낸셜", "케이뱅크", "카카오뱅크", "페이코"]
+  },
+  "tech_companies": ["네이버", "카카오", "라인", "쿠팡", "우아한형제들", "배달의민족"],
+  "global_tech": ["애플", "구글", "메타", "마이크로소프트", "아마존", "엔비디아", "OpenAI", "Anthropic"],
+  "schedule": {
+    "daily_cron_utc": "0 20 * * 0-4",
+    "weekly_cron_utc": "5 20 * * 0",
+    "daily_time_kst": "05:00",
+    "weekly_time_kst": "05:05"
+  }
+}
