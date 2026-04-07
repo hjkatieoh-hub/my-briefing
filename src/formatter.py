@@ -38,7 +38,7 @@ def format_daily(sections: list[dict]) -> str:
     )
     divider = "\n─────────────────"
     body = divider.join(_sec(sec["emoji"], sec["title"], sec["content"]) for sec in sections)
-    foot = f"\n─────────────────\n📊 <a href='https://your-username.github.io/my-briefing/'>전체 분석 대시보드</a>"
+    foot = f"\n─────────────────\n📊 <a href='https://hjkatieoh-hub.github.io/my-briefing/'>전체 분석 대시보드</a>"
     return head + divider + body + foot
 
 
@@ -50,7 +50,7 @@ def format_weekly(sections: list[dict]) -> str:
     )
     divider = "\n─────────────────"
     body = divider.join(_sec(sec["emoji"], sec["title"], sec["content"]) for sec in sections)
-    foot = f"\n─────────────────\n📊 <a href='https://your-username.github.io/my-briefing/'>심층 분석 대시보드</a>"
+    foot = f"\n─────────────────\n📊 <a href='https://hjkatieoh-hub.github.io/my-briefing/'>심층 분석 대시보드</a>"
     return head + divider + body + foot
 
 
