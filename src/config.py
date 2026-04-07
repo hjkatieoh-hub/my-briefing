@@ -11,8 +11,34 @@ PROFILE_PATH = ROOT / "profile.json"
 KST          = timezone(timedelta(hours=9))
 
 ANTHROPIC_API_KEY  = os.environ.get("ANTHROPIC_API_KEY", "")
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-TELEGRAM_CHAT_IDS  = [cid.strip() for cid in os.environ.get("TELEGRAM_CHAT_ID", "").split(",") if cid.strip()]
+# 텔레그램 수신자 목록: BOT_TOKEN:CHAT_ID 쌍
+# TELEGRAM_RECIPIENTS="token1:chatid1,token2:chatid2"
+# 하위 호환: TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID도 지원
+def _build_recipients():
+    recipients = []
+    raw = os.environ.get("TELEGRAM_RECIPIENTS", "")
+    if raw:
+        for pair in raw.split(","):
+            pair = pair.strip()
+            if ":" in pair:
+                token, chat_id = pair.split(":", 1)
+                # bot token has format "number:hash" so re-join properly
+                parts = pair.split(":")
+                # format: botid:bothash:chatid → token=botid:bothash, chatid=chatid
+                token = ":".join(parts[:-1])
+                chat_id = parts[-1]
+                recipients.append((token, chat_id))
+    # fallback: 기존 환경변수
+    if not recipients:
+        token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+        chat_ids = os.environ.get("TELEGRAM_CHAT_ID", "")
+        if token and chat_ids:
+            for cid in chat_ids.split(","):
+                if cid.strip():
+                    recipients.append((token, cid.strip()))
+    return recipients
+
+TELEGRAM_RECIPIENTS = _build_recipients()
 GITHUB_USER        = os.environ.get("GITHUB_USER", "your-username")
 GITHUB_REPO        = os.environ.get("GITHUB_REPO", "my-briefing")
 

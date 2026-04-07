@@ -1,15 +1,15 @@
-"""src/telegram.py — 텔레그램 발송 (다중 수신자 지원)"""
+"""src/telegram.py — 텔레그램 발송 (다중 봇·수신자 지원)"""
 import re
 import requests
-from src.config import TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_IDS
+from src.config import TELEGRAM_RECIPIENTS
 from src.formatter import split_messages
 
 
 def send(text: str) -> bool:
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     ok_all = True
 
-    for chat_id in TELEGRAM_CHAT_IDS:
+    for bot_token, chat_id in TELEGRAM_RECIPIENTS:
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
         for part in split_messages(text):
             payload = {
                 "chat_id": chat_id,
