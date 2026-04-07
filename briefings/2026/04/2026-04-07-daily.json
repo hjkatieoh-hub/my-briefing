@@ -1,55 +1,55 @@
 {
   "date": "2026-04-07",
   "mode": "daily",
-  "generated_at": "2026-04-07T22:55:02.290103+09:00",
+  "generated_at": "2026-04-07T23:02:58.249414+09:00",
   "sections": [
     {
       "id": "weather",
       "emoji": "🌤",
       "title": "오늘 날씨 & 옷차림",
-      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXPH1VyMDKR9qNhYDe4'}",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXzMtR68NETXwDAXgWF'}",
       "ok": false
     },
     {
       "id": "stocks",
       "emoji": "📈",
       "title": "해외주식 & 환율",
-      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXPHDA1tvHbMCawfdiL'}",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXzN7ofNRZNn4biympC'}",
       "ok": false
     },
     {
       "id": "realestate",
       "emoji": "🏠",
       "title": "부동산 시그널",
-      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXPHhg4jNQ1mMd3J2YV'}",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXzNNgmRRc566ZjDscn'}",
       "ok": false
     },
     {
       "id": "toss",
       "emoji": "💙",
       "title": "토스 & 핀테크",
-      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXPJ1mzXXP6BgjWmKAT'}",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXzNfJCQixQWCRg4QBG'}",
       "ok": false
     },
     {
       "id": "industry",
       "emoji": "🏢",
       "title": "네카라쿠배 & 빅테크",
-      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXPJFfaHdUE7AQrEwZH'}",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXzNuw8KqohAsFmCkVr'}",
       "ok": false
     },
     {
       "id": "ai",
       "emoji": "🤖",
       "title": "AI 트렌드",
-      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXPJTKBxhSYq7miNAR3'}",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXzPBJYKKUF6rddReSZ'}",
       "ok": false
     },
     {
       "id": "daily_insight",
       "emoji": "💡",
       "title": "오늘의 인사이트",
-      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXPJdyhD3iKYFZHVn3p'}",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXzPQSpuahNE8BsvEYr'}",
       "ok": false
     }
   ]
