@@ -2,8 +2,10 @@
 import os, json
 from pathlib import Path
 from datetime import timezone, timedelta
+from dotenv import load_dotenv
 
 ROOT         = Path(__file__).parent.parent
+load_dotenv(ROOT / ".env")
 BRIEFINGS    = ROOT / "briefings"
 PROFILE_PATH = ROOT / "profile.json"
 KST          = timezone(timedelta(hours=9))
