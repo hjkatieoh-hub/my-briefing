@@ -1,0 +1,56 @@
+{
+  "date": "2026-04-07",
+  "mode": "weekly",
+  "generated_at": "2026-04-07T22:59:10.904386+09:00",
+  "sections": [
+    {
+      "id": "weekly_market",
+      "emoji": "📊",
+      "title": "주간 시장 리뷰",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXhbncFZ35TsSmWGCKJ'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_realestate",
+      "emoji": "🏠",
+      "title": "부동산 주간 리포트",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXhc1FfoNPMyMpTY4cN'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_fintech",
+      "emoji": "💙",
+      "title": "핀테크 업계 흐름",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXhcEeTcvtKJqF7QubS'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_calendar",
+      "emoji": "📅",
+      "title": "이번 주 경제 일정",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXhcTncg5NoLp3rjdMD'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_events",
+      "emoji": "🎉",
+      "title": "이번 주말 행사",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXhcciLh9VQ3EyiXi7G'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_concept",
+      "emoji": "🧠",
+      "title": "이번 주 배울 개념",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXhcodJtZhYHkbipFQ6'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_signal",
+      "emoji": "🔭",
+      "title": "다음 주 시그널",
+      "content": "수집 오류: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CZpXhdVoS5Uim2esv3KSG'}",
+      "ok": false
+    }
+  ]
+}
