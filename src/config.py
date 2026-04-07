@@ -12,7 +12,7 @@ KST          = timezone(timedelta(hours=9))
 
 ANTHROPIC_API_KEY  = os.environ.get("ANTHROPIC_API_KEY", "")
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-TELEGRAM_CHAT_ID   = os.environ.get("TELEGRAM_CHAT_ID", "")
+TELEGRAM_CHAT_IDS  = [cid.strip() for cid in os.environ.get("TELEGRAM_CHAT_ID", "").split(",") if cid.strip()]
 GITHUB_USER        = os.environ.get("GITHUB_USER", "your-username")
 GITHUB_REPO        = os.environ.get("GITHUB_REPO", "my-briefing")
 
