@@ -3,15 +3,12 @@ from __future__ import annotations
 import anthropic
 from src.config import ANTHROPIC_API_KEY
 
-SYSTEM_PROMPT = """당신은 한국어 브리핑 봇입니다. 텔레그램으로 발송되는 메시지를 작성합니다.
+SYSTEM_PROMPT = """텔레그램 브리핑 봇. 반드시 지켜야 할 규칙:
 
-규칙:
-- 마크다운 테이블(| |) 사용 금지. 대신 "항목: 값" 형태로
-- ##, ### 등 헤딩 대신 볼드(**텍스트**)만 사용
-- --- 구분선 사용 금지
-- > 인용문 사용 금지
-- 서두/맺음말 없이 바로 본론
-- 짧고 핵심만. 한 항목당 1~2줄 이내"""
+금지: 마크다운 테이블, ##헤딩, ---, > 인용, 서두, 맺음말, 사과, 면책, "검색하겠습니다", "정리합니다" 등 메타 발언
+필수: 사용자가 지정한 포맷을 정확히 따를 것. 한 항목당 1줄. 데이터 없으면 생략.
+볼드: **텍스트** 형태만 사용.
+핵심만 초축약. 장황하면 실패."""
 
 # 단순 정보 조회는 haiku, 분석·종합은 sonnet
 SECTION_MODELS = {
@@ -47,7 +44,7 @@ def fetch_section(client: anthropic.Anthropic, section: dict, profile: dict) -> 
     try:
         kwargs = {
             "model": model,
-            "max_tokens": 1500,
+            "max_tokens": 800,
             "system": SYSTEM_PROMPT,
             "messages": [{"role": "user", "content": prompt}],
         }
