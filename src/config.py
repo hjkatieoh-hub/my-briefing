@@ -96,19 +96,15 @@ def prompt_realestate(p: dict) -> str:
 서두 없이 바로."""
 
 def prompt_toss(p: dict) -> str:
-    entities = ", ".join(p["fintech"]["entities"])
-    comps    = ", ".join(p["fintech"]["competitors"])
-    return f"""오늘 다음 기업/기관 관련 뉴스를 웹에서 모두 찾아줘:
+    comps = ", ".join(p["fintech"]["competitors"])
+    return f"""오늘 핀테크 뉴스를 우선순위 순으로 짧게 알려줘.
 
-[토스 계열] {entities}
-[경쟁사] {comps}
-[정책] 금융위원회, 금감원의 핀테크·오픈뱅킹·마이데이터 관련 발표
+**최우선** 토스인컴(토스 보험) 관련 뉴스
+**그 다음** 토스·토스뱅크·토스증권·비바리퍼블리카 관련
+**마지막** {comps} / 금융위·금감원 핀테크 정책
 
-각 뉴스마다:
-- 뉴스 내용 2~3줄
-- 토스 재직자 관점 인사이트 한 줄
-
-없는 뉴스는 생략. 서두 없이 바로 목록으로."""
+각 뉴스: 제목 + 핵심 1~2줄 + 인사이트 한 줄.
+최대 5건. 없으면 생략. 서두 없이 바로."""
 
 def prompt_industry(p: dict) -> str:
     domestic = ", ".join(p["tech_companies"])
