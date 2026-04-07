@@ -109,11 +109,12 @@ def prompt_toss(p: dict) -> str:
 def prompt_industry(p: dict) -> str:
     domestic = ", ".join(p["tech_companies"])
     global_  = ", ".join(p["global_tech"][:5])
-    return f"""오늘 다음 기업들의 주요 뉴스를 각 1건씩 알려줘:
+    return f"""오늘(또는 최근 24시간) 다음 기업들의 뉴스를 검색해서 각 1건씩 알려줘.
 국내: {domestic}
 글로벌(국내 IT·핀테크에 영향 있는 것만): {global_}
 
-각 2~3줄로 간결하게. 서두 없이 바로 목록으로."""
+각 기업명으로 "네이버 뉴스", "카카오 뉴스" 등으로 검색해.
+각 1~2줄. 뉴스가 없는 기업은 생략. 서두/사과 없이 바로."""
 
 def prompt_ai(p: dict) -> str:
     return """오늘 AI/인공지능 분야 주목할 뉴스 또는 릴리즈 2~3건.
