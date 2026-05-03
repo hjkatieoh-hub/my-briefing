@@ -1,0 +1,56 @@
+{
+  "date": "2026-05-04",
+  "mode": "weekly",
+  "generated_at": "2026-05-04T05:52:56.895265+09:00",
+  "sections": [
+    {
+      "id": "weekly_market",
+      "emoji": "📊",
+      "title": "주간 시장",
+      "content": "수집 오류: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CagJHRaTStA1qbtWSeURi'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_realestate",
+      "emoji": "🏠",
+      "title": "부동산 주간",
+      "content": "수집 오류: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CagJHRzWQzrmAkwcdv4JE'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_fintech",
+      "emoji": "💙",
+      "title": "핀테크 주간",
+      "content": "수집 오류: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CagJHSQoiNYtunuq3TLev'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_calendar",
+      "emoji": "📅",
+      "title": "경제 일정",
+      "content": "수집 오류: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CagJHSpMyJ6Q9SzriCwyf'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_events",
+      "emoji": "🎉",
+      "title": "주말 행사",
+      "content": "수집 오류: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CagJHTDvbBLWUcCJTzdyS'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_concept",
+      "emoji": "🧠",
+      "title": "경제 개념",
+      "content": "수집 오류: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CagJHTeDp4YeAEx5zHJA1'}",
+      "ok": false
+    },
+    {
+      "id": "weekly_signal",
+      "emoji": "🔭",
+      "title": "다음 주 시그널",
+      "content": "수집 오류: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CagJHU4XPCDLRp8oFDFNY'}",
+      "ok": false
+    }
+  ]
+}
